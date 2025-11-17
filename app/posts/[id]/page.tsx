@@ -1,5 +1,6 @@
 import BlogPost from "@/types/blogpost";
 import { Metadata } from "next";
+import LikeButton from "./likeButton";
 
 type Pageparams = {
   id: string;
@@ -42,6 +43,7 @@ export default async function Post({
     <article>
       <h1>{loadedpost.title}</h1>
       <p>{loadedpost.body}</p>
+      <LikeButton />
     </article>
   );
 }
