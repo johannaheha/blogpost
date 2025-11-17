@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,8 +26,34 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
+  );
+}
+
+function Navbar() {
+  return (
+    <nav style={{ padding: "1rem", borderBottom: "1px solid #ccc" }}>
+      <Link href="/posts" style={{ marginRight: "1rem" }}>
+        Home
+      </Link>
+    </nav>
+  );
+}
+
+function Footer() {
+  return (
+    <footer
+      style={{
+        padding: "1rem",
+        borderTop: "1px solid #ccc",
+        marginTop: "2rem",
+      }}
+    >
+      <p>© 2024 My Blog by Julia Shark. All rights reserved.</p>
+    </footer>
   );
 }
