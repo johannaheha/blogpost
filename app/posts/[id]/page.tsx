@@ -1,48 +1,56 @@
+import type { Metadata } from "next";
 import BlogPost from "@/types/blogpost";
-import { Metadata } from "next";
 import LikeButton from "./likeButton";
 
-type Pageparams = {
+type PageParams = {
   id: string;
+};
+
+// Helper-Function for ONE post
+async function getPost(id: string): Promise<BlogPost | null> {
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/posts/${id}`
+  );
+
+  if (!response.ok) {
+    return null;
+  }
+
+  const post: BlogPost = await response.json();
+  return post;
+}
+
+type PageProps = {
+  params: Promise<PageParams>;
 };
 
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<Pageparams>;
-}): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   const { id } = await params;
-
-  const data = await fetch("https://jsonplaceholder.typicode.com/posts");
-  const posts = await data.json();
-
-  const loadedpost = posts.find((post: BlogPost) => post.id === +id);
+  const post = await getPost(id);
 
   return {
-    title: loadedpost ? loadedpost.title : "Post Not Found",
+    title: post ? post.title : "Post Not Found",
   };
 }
 
 export default async function Post({
   params,
 }: {
-  params: Promise<Pageparams>;
+  params: Promise<PageParams>;
 }) {
   const { id } = await params;
+  const post = await getPost(id);
 
-  const data = await fetch("https://jsonplaceholder.typicode.com/posts");
-  const posts = await data.json();
-
-  const loadedpost = posts.find((post: BlogPost) => post.id == +id);
-
-  if (!loadedpost) {
+  if (!post) {
     return <h1>Post Not Found</h1>;
   }
 
   return (
     <article>
-      <h1>{loadedpost.title}</h1>
-      <p>{loadedpost.body}</p>
+      <h1>{post.title}</h1>
+      <p>{post.body}</p>
       <LikeButton />
     </article>
   );

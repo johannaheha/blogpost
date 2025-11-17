@@ -37,7 +37,7 @@ export default function RootLayout({
 function Navbar() {
   return (
     <nav style={{ padding: "1rem", borderBottom: "1px solid #ccc" }}>
-      <Link href="/posts" style={{ marginRight: "1rem" }}>
+      <Link href="/" style={{ marginRight: "1rem" }}>
         Home
       </Link>
     </nav>
